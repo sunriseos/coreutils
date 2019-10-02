@@ -48,6 +48,8 @@ const HOST_OS: &str = "Darwin";
 const HOST_OS: &str = "Fuchsia";
 #[cfg(target_os = "redox")]
 const HOST_OS: &str = "Redox";
+#[cfg(target_os = "sunrise")]
+const HOST_OS: &str = "Sunrise";
 
 pub fn uumain(args: Vec<String>) -> i32 {
     let usage = format!("{} [OPTION]...", executable!());

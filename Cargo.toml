@@ -155,7 +155,9 @@ redox = [
 # that can be compiled and run on Sunrise. Should be built
 # with --no-default-features when selecting this feature.
 sunrise = [
+  "arch",
   "cp",
+  "uname",
 ]
 
 test_unimplemented = []
@@ -300,4 +302,8 @@ branch = "master"
 
 [patch.crates-io.filetime]
 git = "https://github.com/sunriseos/filetime.git"
+branch = "master"
+
+[patch.crates-io.platform-info]
+git = "https://github.com/sunriseos/platform-info.git"
 branch = "master"
