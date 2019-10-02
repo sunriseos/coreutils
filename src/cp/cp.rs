@@ -568,6 +568,8 @@ impl Options {
             OPT_CONTEXT,
             #[cfg(windows)]
             OPT_FORCE,
+            #[cfg(not(any(windows, unix)))]
+            OPT_SYMBOLIC_LINK,
         ];
 
         for not_implemented_opt in not_implemented_opts {
@@ -708,7 +710,7 @@ fn preserve_hardlinks(
     found_hard_link: &mut bool,
 ) -> CopyResult<()> {
     // Redox does not currently support hard links
-    #[cfg(not(target_os = "redox"))]
+    #[cfg(not(any(target_os = "redox", target_os = "sunrise")))]
     {
         if !source.is_dir() {
             unsafe {
@@ -881,7 +883,7 @@ fn copy_directory(root: &Path, target: &Target, options: &Options) -> CopyResult
     }
 
     // This should be changed once Redox supports hardlinks
-    #[cfg(any(windows, target_os = "redox"))]
+    #[cfg(any(windows, target_os = "redox", target_os = "sunrise"))]
     let mut hard_links: Vec<(String, u64)> = vec![];
 
     for path in WalkDir::new(root) {
@@ -977,9 +979,14 @@ fn copy_attribute(source: &Path, dest: &Path, attribute: &Attribute) -> CopyResu
     })
 }
 
-#[cfg(not(windows))]
+#[cfg(unix)]
 fn symlink_file(source: &Path, dest: &Path, context: &str) -> CopyResult<()> {
     Ok(std::os::unix::fs::symlink(source, dest).context(context)?)
+}
+
+#[cfg(not(any(unix, windows)))]
+fn symlink_file(source: &Path, dest: &Path, context: &str) -> CopyResult<()> {
+    Err(Error::NotImplemented(OPT_SPARSE.to_string()))
 }
 
 #[cfg(windows)]

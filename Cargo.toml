@@ -150,6 +150,14 @@ redox = [
   "install",
   "redox_generic"
 ]
+
+# Feature "sunrise" contains the exclusive list of utilities
+# that can be compiled and run on Sunrise. Should be built
+# with --no-default-features when selecting this feature.
+sunrise = [
+  "cp",
+]
+
 test_unimplemented = []
 nightly = []
 default = ["unix"]
@@ -273,3 +281,23 @@ path = "src/uutils/uutils.rs"
 
 [[test]]
 name = "tests"
+
+[patch.crates-io.libc]
+git = "https://github.com/sunriseos/libc.git"
+branch = "sunrise-0.2.62"
+
+[patch.crates-io.uucore]
+git = "https://github.com/sunriseos/uucore.git"
+branch = "master"
+
+[patch.crates-io.atty]
+git = "https://github.com/sunriseos/atty.git"
+branch = "master"
+
+[patch.crates-io.clap]
+git = "https://github.com/sunriseos/clap.git"
+branch = "master"
+
+[patch.crates-io.filetime]
+git = "https://github.com/sunriseos/filetime.git"
+branch = "master"
