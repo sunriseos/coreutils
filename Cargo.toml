@@ -156,7 +156,13 @@ redox = [
 # with --no-default-features when selecting this feature.
 sunrise = [
   "arch",
+  #"hostname",
+  "nproc",
+  #"sync",
+  "touch",
+  #"whoami",
   "cp",
+  "ls",
   "uname",
 ]
 
@@ -306,4 +312,12 @@ branch = "master"
 
 [patch.crates-io.platform-info]
 git = "https://github.com/sunriseos/platform-info.git"
+branch = "master"
+
+[patch.crates-io.time]
+git = "https://github.com/sunriseos/time.git"
+branch = "v0.1"
+
+[patch.crates-io.termsize]
+git = "https://github.com/sunriseos/termsize.git"
 branch = "master"
