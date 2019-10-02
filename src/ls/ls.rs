@@ -17,6 +17,7 @@ extern crate number_prefix;
 use number_prefix::{Standalone, Prefixed, decimal_prefix};
 use term_grid::{Cell, Direction, Filling, Grid, GridOptions};
 use time::{strftime, Timespec};
+use std::time::SystemTime;
 
 #[cfg(unix)]
 #[macro_use]
@@ -206,13 +207,12 @@ fn list(options: getopts::Matches) {
     }
 }
 
-#[cfg(any(unix, target_os = "redox"))]
 fn sort_entries(entries: &mut Vec<PathBuf>, options: &getopts::Matches) {
     let mut reverse = options.opt_present("r");
     if options.opt_present("t") {
         if options.opt_present("c") {
             entries.sort_by_key(|k| {
-                Reverse(get_metadata(k, options).map(|md| md.ctime()).unwrap_or(0))
+                Reverse(get_metadata(k, options).and_then(|md| md.created()).unwrap_or(SystemTime::UNIX_EPOCH))
             });
         } else {
             entries.sort_by_key(|k| {
@@ -225,35 +225,7 @@ fn sort_entries(entries: &mut Vec<PathBuf>, options: &getopts::Matches) {
             });
         }
     } else if options.opt_present("S") {
-        entries.sort_by_key(|k| get_metadata(k, options).map(|md| md.size()).unwrap_or(0));
-        reverse = !reverse;
-    } else if !options.opt_present("U") {
-        entries.sort();
-    }
-
-    if reverse {
-        entries.reverse();
-    }
-}
-
-#[cfg(windows)]
-fn sort_entries(entries: &mut Vec<PathBuf>, options: &getopts::Matches) {
-    let mut reverse = options.opt_present("r");
-    if options.opt_present("t") {
-        entries.sort_by_key(|k| {
-            // Newest first
-            Reverse(
-                get_metadata(k, options)
-                    .and_then(|md| md.modified())
-                    .unwrap_or(std::time::UNIX_EPOCH),
-            )
-        });
-    } else if options.opt_present("S") {
-        entries.sort_by_key(|k| {
-            get_metadata(k, options)
-                .map(|md| md.file_size())
-                .unwrap_or(0)
-        });
+        entries.sort_by_key(|k| get_metadata(k, options).map(|md| md.len()).unwrap_or(0));
         reverse = !reverse;
     } else if !options.opt_present("U") {
         entries.sort();
