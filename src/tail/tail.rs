@@ -113,6 +113,7 @@ pub fn uumain(args: Vec<String>) -> i32 {
     }
 
     settings.follow = given_options.opt_present("f");
+
     if settings.follow {
         match given_options.opt_str("s") {
             Some(n) => {

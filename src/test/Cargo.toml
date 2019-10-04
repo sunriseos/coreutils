@@ -10,6 +10,7 @@ path = "test.rs"
 
 [dependencies]
 libc = "0.2.42"
+atty = "0.2"
 uucore = "0.0.1"
 
 [target.'cfg(target_os = "redox")'.dependencies]

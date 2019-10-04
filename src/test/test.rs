@@ -13,6 +13,9 @@ extern crate libc;
 #[cfg(target_os = "redox")]
 extern crate syscall;
 
+extern crate atty;
+
+use atty::Stream;
 use std::collections::HashMap;
 use std::ffi::OsString;
 use std::env::args_os;
@@ -148,8 +151,17 @@ fn isatty(fd: &[u8]) -> bool {
         .ok()
         .and_then(|s| s.parse().ok())
         .map_or(false, |i| {
-            #[cfg(not(target_os = "redox"))]
+            #[cfg(not(any(target_os = "redox", target_os = "sunrise")))]
             unsafe { libc::isatty(i) == 1 }
+            #[cfg(target_os = "sunrise")]
+            {
+                match i {
+                    0 => atty::is(Stream::Stdin),
+                    1 => atty::is(Stream::Stdout),
+                    2 => atty::is(Stream::Stderr),
+                    _ => false
+                }
+            }
             #[cfg(target_os = "redox")]
             syscall::dup(i, b"termios").map(syscall::close).is_ok()
         })
@@ -340,7 +352,7 @@ enum PathCondition {
     Executable,
 }
 
-#[cfg(not(windows))]
+#[cfg(not(any(windows, target_os = "sunrise")))]
 fn path(path: &[u8], cond: PathCondition) -> bool {
     use std::os::unix::fs::{MetadataExt, FileTypeExt};
     use std::os::unix::ffi::OsStrExt;
@@ -405,7 +417,7 @@ fn path(path: &[u8], cond: PathCondition) -> bool {
     }
 }
 
-#[cfg(windows)]
+#[cfg(any(windows, target_os = "sunrise"))]
 fn path(path: &[u8], cond: PathCondition) -> bool {
     use std::fs::metadata;
     let path = from_utf8(path).unwrap();

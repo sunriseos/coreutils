@@ -2,10 +2,11 @@ extern crate libc;
 
 use std::path::Path;
 use std::fs;
-#[cfg(not(windows))]
+#[cfg(not(any(windows, target_os = "sunrise")))]
 use uucore::mode;
 
 /// Takes a user-supplied string and tries to parse to u16 mode bitmask.
+#[cfg(any(unix, target_os = "redox"))]
 pub fn parse(mode_string: &str, considering_dir: bool) -> Result<u32, String> {
     let numbers: &[char] = &['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
@@ -15,6 +16,12 @@ pub fn parse(mode_string: &str, considering_dir: bool) -> Result<u32, String> {
     } else {
         mode::parse_symbolic(0, mode_string, considering_dir)
     }
+}
+
+/// Takes a user-supplied string and tries to parse to u16 mode bitmask.
+#[cfg(any(windows, target_os = "sunrise"))]
+pub fn parse(mode_string: &str, considering_dir: bool) -> Result<u32, String> {
+    Ok(0777)
 }
 
 /// chmod a file or directory on UNIX.
@@ -33,7 +40,7 @@ pub fn chmod(path: &Path, mode: u32) -> Result<(), ()> {
 ///
 /// Adapted from mkdir.rs.
 ///
-#[cfg(windows)]
+#[cfg(any(windows, target_os = "sunrise"))]
 pub fn chmod(path: &Path, mode: u32) -> Result<(), ()> {
     // chmod on Windows only sets the readonly flag, which isn't even honored on directories
     Ok(())

@@ -155,15 +155,85 @@ redox = [
 # that can be compiled and run on Sunrise. Should be built
 # with --no-default-features when selecting this feature.
 sunrise = [
+  # Base generic
+  "uname",
+  #"chmod",
   "arch",
   #"hostname",
   "nproc",
   #"sync",
   "touch",
   #"whoami",
+
+  "install",
+
+  # Most other generic supported by sunrise
+  "sunrise_generic"
+]
+
+sunrise_generic = [
+
+  # And maybe all generic utilities
+  "base32",
+  "base64",
+  "basename",
+  "cat",
+  "cksum",
+  "comm",
   "cp",
+  "cut",
+  "date",
+  #"dircolors",
+  "dirname",
+  "echo",
+  "env",
+  "expand",
+  #"expr",
+  "factor",
+  "false",
+  "fmt",
+  "fold",
+  "hashsum",
+  "head",
+  "join",
+  #"link",
+  #"ln",
   "ls",
-  "uname",
+  "mkdir",
+  #"mktemp",
+  "more",
+  "mv",
+  "nl",
+  "od",
+  "paste",
+  "printenv",
+  "printf",
+  "ptx",
+  "pwd",
+  #"readlink",
+  "realpath",
+  "relpath",
+  "rm",
+  "rmdir",
+  "seq",
+  "shred",
+  "shuf",
+  "sleep",
+  "sort",
+  "split",
+  "sum",
+  "tac",
+  "tail",
+  "tee",
+  "test",
+  "tr",
+  "true",
+  "truncate",
+  "tsort",
+  "unexpand",
+  "uniq",
+  "wc",
+  #"yes",
 ]
 
 test_unimplemented = []

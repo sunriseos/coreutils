@@ -27,7 +27,9 @@ pub fn format_item_flo16(f: f64) -> String {
 }
 
 pub fn format_item_flo32(f: f64) -> String {
-    format!(" {}", format_flo32(f as f32))
+        // TODO: __truncdfsf2 in compiler-builtins
+    //format!(" {}", format_flo32(f as f32))
+    unimplemented!()
 }
 
 pub fn format_item_flo64(f: f64) -> String {
@@ -48,7 +50,9 @@ fn format_flo32(f: f32) -> String {
         // subnormal numbers will be normal as f64, so will print with a wrong precision
         format!("{:width$e}", f, width = width) // subnormal numbers
     } else {
-        format_float(f as f64, width, precision)
+        // TODO: __truncdfsf2 in compiler-builtins
+        //format_float(f as f64, width, precision)
+        unimplemented!()
     }
 }
 

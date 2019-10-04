@@ -1670,6 +1670,7 @@ dependencies = [
 name = "test"
 version = "0.0.1"
 dependencies = [
+ "atty 0.2.13 (git+https://github.com/sunriseos/atty.git)",
  "libc 0.2.62 (git+https://github.com/sunriseos/libc.git?branch=sunrise-0.2.62)",
  "redox_syscall 0.1.54 (registry+https://github.com/rust-lang/crates.io-index)",
  "uucore 0.0.1 (git+https://github.com/sunriseos/uucore.git)",
@@ -1896,7 +1897,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "uucore"
 version = "0.0.1"
-source = "git+https://github.com/sunriseos/uucore.git#4be2deb09bfbf7a97c21fe1979aeb1b915be9cce"
+source = "git+https://github.com/sunriseos/uucore.git#a60175ba8d841347c44c9117eaab432e1c7c0144"
 dependencies = [
  "data-encoding 2.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",

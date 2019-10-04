@@ -17,7 +17,7 @@ pub fn main() {
             let krate = key[feature_prefix.len()..].to_lowercase();
             match krate.as_ref() {
                 "default" | "unix" | "redox" | "redox_generic" | "fuchsia" | "generic" | "windows"
-                | "sunrise" | "nightly" | "test_unimplemented" => continue,
+                | "sunrise" | "sunrise_generic" | "nightly" | "test_unimplemented" => continue,
                 _ => {}
             }
             crates.push(krate.to_string());
