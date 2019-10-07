@@ -269,6 +269,9 @@ fn enter_directory(dir: &PathBuf, options: &getopts::Matches) {
 
     if options.opt_present("a") {
         let mut display_entries = entries.clone();
+    
+        // ".." doesn't exist on Sunrise
+        #[cfg(not(target_os = "sunrise"))]
         display_entries.insert(0, dir.join(".."));
         display_entries.insert(0, dir.join("."));
         display_items(&display_entries, Some(dir), options);
